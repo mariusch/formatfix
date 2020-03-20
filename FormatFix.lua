@@ -1,4 +1,7 @@
-local FontType = "Fonts\\FRIZQT__.ttf";  -- choose font here
+local Name, AddOn = ...;
+local Title = select(2,GetAddOnInfo(Name)):gsub("%s*v?[%d%.]+$","");
+
+local FontType = "Fonts\\FRIZQT__.ttf";  -- choose font here!
 
 local function ApplyFonts()
     PlayerFrameHealthBar.TextString:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
@@ -18,25 +21,6 @@ local function ApplyFonts()
     TargetFrameManaBar.RightText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
 end
 
-SLASH_FF1 = "/ff";
-SlashCmdList["FF"] = function(msg)
-    local _, _, cmd, args = string.find(msg, "%s?(%w+)%s?(.*)")
-
-    if cmd == "percent" and args == "enable" then
-        FormatFix_UsePercent = true
-    elseif cmd == "percent" and args == "disable" then
-        FormatFix_UsePercent = false
-    elseif cmd == "fontsize" and args ~= "" and tonumber(args) ~= nil then
-        FormatFix_FontSize = tonumber(args)
-        ApplyFonts();
-    else
-        print("Usage:")
-        print("/ff percent enable  -  enable current HP | percentage HP mode. useful for bosses")
-        print("/ff percent disable  -  disable current HP | percentage HP mode")
-        print("/ff fontsize <number>  -  configure font size")
-    end
-end
-
 local f = CreateFrame("Frame")
 f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
@@ -45,6 +29,9 @@ function f:ADDON_LOADED()
     if FormatFix_FontSize == nil then FormatFix_FontSize = 12; end
 
     ApplyFonts();
+    if not f.optionsPanel then
+        f.optionsPanel = f:CreateGUI()
+    end
 end
 
 local BarFormatFuncs={
@@ -72,3 +59,46 @@ hooksecurefunc("TextStatusBar_UpdateTextStringWithValues",function(self,...)
         end
     end
 end);
+
+function f:CreateGUI()
+    local Panel=CreateFrame("Frame"); do
+        Panel.name=Title;
+        InterfaceOptions_AddCategory(Panel);--	Panel Registration
+
+        local title=Panel:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge");
+        title:SetPoint("TOPLEFT",12,-15);
+        title:SetText(Title);
+
+        local name = "PercentButton"
+        local template = "UICheckButtonTemplate"
+        local PercentButton = CreateFrame("CheckButton", name, Panel, "UICheckButtonTemplate")
+        PercentButton:SetPoint("TOPLEFT", 10, -60)
+        PercentButton.text = _G[name.."Text"]
+        PercentButton.text:SetText("Hybrid Percent Mode")
+        PercentButton:SetChecked(FormatFix_UsePercent)
+        PercentButton:SetScript("OnClick", function() FormatFix_UsePercent = not FormatFix_UsePercent end)
+
+        local name = "FontSizeSlider"
+        local template = "OptionsSliderTemplate"
+        local FontSizeSlider = CreateFrame("Slider", name, Panel, template)
+        FontSizeSlider:SetPoint("TOPLEFT",20, -120)
+        FontSizeSlider.textLow = _G[name.."Low"]
+        FontSizeSlider.textHigh = _G[name.."High"]
+        FontSizeSlider.text = _G[name.."Text"]
+        FontSizeSlider:SetMinMaxValues(8, 16)
+        FontSizeSlider.minValue, FontSizeSlider.maxValue = FontSizeSlider:GetMinMaxValues()
+        FontSizeSlider.textLow:SetText(FontSizeSlider.minValue)
+        FontSizeSlider.textHigh:SetText(FontSizeSlider.maxValue)
+        FontSizeSlider:SetValue(FormatFix_FontSize)
+        FontSizeSlider.text:SetText("Font Size: "..FontSizeSlider:GetValue(FormatFix_FontSize))
+        FontSizeSlider:SetValueStep(1)
+        FontSizeSlider:SetObeyStepOnDrag(true);
+        FontSizeSlider:SetScript("OnValueChanged", function(self,event,arg1)
+            FontSizeSlider.text:SetText("Font Size: "..FontSizeSlider:GetValue(FormatFix_FontSize))
+            FormatFix_FontSize = FontSizeSlider:GetValue()
+            ApplyFonts()
+        end)
+    end
+
+    return Panel
+end
