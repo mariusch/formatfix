@@ -1,0 +1,7 @@
+package-as: LejonAddon
+enable-nolib-creation: no
+ignore:
+    - README.md
+    - LICENSE
+required-dependencies:
+    - 363463-modern-targetframe
