@@ -1,0 +1,8 @@
+## Interface: 11304
+## Title: FormatFix
+## Notes: Abbreviates the Numeric Value mode of the Status Text
+## Author: Grift
+## Version: 0.4
+## RequiredDeps: ModernTargetFrame
+## SavedVariablesPerCharacter: FormatFix_UsePercent, FormatFix_FontSize
+FormatFix.lua
