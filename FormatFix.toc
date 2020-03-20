@@ -2,7 +2,7 @@
 ## Title: FormatFix
 ## Notes: Abbreviates the Numeric Value mode of the Status Text
 ## Author: Grift
-## Version: 0.4
+## Version: @project-version@
 ## RequiredDeps: ModernTargetFrame
 ## SavedVariablesPerCharacter: FormatFix_UsePercent, FormatFix_FontSize
 FormatFix.lua
