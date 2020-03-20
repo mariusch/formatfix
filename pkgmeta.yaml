@@ -1,4 +1,4 @@
-package-as: LejonAddon
+package-as: FormatFix
 enable-nolib-creation: no
 ignore:
     - README.md
