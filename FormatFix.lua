@@ -12,6 +12,16 @@ local function ApplyFonts()
     PlayerFrameManaBar.LeftText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
     PlayerFrameManaBar.RightText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
 
+    if FormatFix_FormatPet then
+        PetFrameHealthBar.TextString:SetFont(FontType, FormatFix_FontSize - 2, "OUTLINE")
+        PetFrameHealthBar.LeftText:SetFont(FontType, FormatFix_FontSize - 2, "OUTLINE")
+        PetFrameHealthBar.RightText:SetFont(FontType, FormatFix_FontSize - 2, "OUTLINE")
+
+        PetFrameManaBar.TextString:SetFont(FontType, FormatFix_FontSize - 2, "OUTLINE")
+        PetFrameManaBar.LeftText:SetFont(FontType, FormatFix_FontSize - 2, "OUTLINE")
+        PetFrameManaBar.RightText:SetFont(FontType, FormatFix_FontSize - 2, "OUTLINE")
+    end
+
     TargetFrameHealthBar.TextString:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
     TargetFrameHealthBar.LeftText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
     TargetFrameHealthBar.RightText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
@@ -26,6 +36,7 @@ f:RegisterEvent("ADDON_LOADED")
 f:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
 function f:ADDON_LOADED()
     if FormatFix_UsePercent == nil then FormatFix_UsePercent = false; end
+    if FormatFix_FormatPet == nil then FormatFix_FormatPet = false; end
     if FormatFix_FontSize == nil then FormatFix_FontSize = 12; end
 
     ApplyFonts();
@@ -38,13 +49,21 @@ local BarFormatFuncs={
     [PlayerFrameHealthBar]=function(self,textstring,val,min,max)
         textstring:SetText(AbbreviateLargeNumbers(val));
     end;
-    [PlayerFrameManaBar]=function(self,textstring,val,min,max)
-        textstring:SetText(AbbreviateLargeNumbers(val));
-    end;
     [TargetFrameHealthBar]=function(self,textstring,val,min,max)
         if not FormatFix_UsePercent then textstring:SetText(AbbreviateLargeNumbers(val));
         elseif max==100 then textstring:SetText(AbbreviateLargeNumbers(val).."%");
         else textstring:SetFormattedText("%s || %.0f%%",AbbreviateLargeNumbers(val),100*val/max); end
+    end;
+    [PetFrameHealthBar]=function(self,textstring,val,min,max)
+        if FormatFix_FormatPet then
+            textstring:SetText(AbbreviateLargeNumbers(val));
+        end;
+    end;
+    [PetFrameManaBar]=function(self,textstring,val,min,max)
+        if FormatFix_FormatPet then
+            textstring:SetText(AbbreviateLargeNumbers(val));
+            textstring:SetPoint("CENTER", PetFrame, "TOPLEFT", 82, -35);
+        end;
     end;
 }
 
@@ -78,10 +97,19 @@ function f:CreateGUI()
         PercentButton:SetChecked(FormatFix_UsePercent)
         PercentButton:SetScript("OnClick", function() FormatFix_UsePercent = not FormatFix_UsePercent end)
 
+        local name = "FormatPetButton"
+        local template = "UICheckButtonTemplate"
+        local FormatPetButton = CreateFrame("CheckButton", name, Panel, "UICheckButtonTemplate")
+        FormatPetButton:SetPoint("TOPLEFT", 10, -100)
+        FormatPetButton.text = _G[name.."Text"]
+        FormatPetButton.text:SetText("Format Pet Frame (Requires Reload)")
+        FormatPetButton:SetChecked(FormatFix_FormatPet)
+        FormatPetButton:SetScript("OnClick", function() FormatFix_FormatPet = not FormatFix_FormatPet end)
+
         local name = "FontSizeSlider"
         local template = "OptionsSliderTemplate"
         local FontSizeSlider = CreateFrame("Slider", name, Panel, template)
-        FontSizeSlider:SetPoint("TOPLEFT",20, -120)
+        FontSizeSlider:SetPoint("TOPLEFT",20, -160)
         FontSizeSlider.textLow = _G[name.."Low"]
         FontSizeSlider.textHigh = _G[name.."High"]
         FontSizeSlider.text = _G[name.."Text"]

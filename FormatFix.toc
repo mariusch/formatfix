@@ -4,5 +4,5 @@
 ## Author: Grift
 ## Version: @project-version@
 ## RequiredDeps: ModernTargetFrame
-## SavedVariablesPerCharacter: FormatFix_UsePercent, FormatFix_FontSize
+## SavedVariablesPerCharacter: FormatFix_UsePercent, FormatFix_FontSize, FormatFix_FormatPet
 FormatFix.lua
