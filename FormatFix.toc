@@ -1,4 +1,4 @@
-## Interface-BCC: 20501
+## Interface: 20501
 ## Title: FormatFix
 ## Notes: Abbreviates the Numeric Value mode of the Status Text display setting
 ## Author: ollema
