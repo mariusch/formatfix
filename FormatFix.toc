@@ -1,7 +1,7 @@
-## Interface: 11304
+## Interface-BCC: 20501
 ## Title: FormatFix
-## Notes: Abbreviates the Numeric Value mode of the Status Text
-## Author: Grift
+## Notes: Abbreviates the Numeric Value mode of the Status Text display setting
+## Author: ollema
 ## Version: @project-version@
 ## RequiredDeps: ModernTargetFrame
 ## SavedVariablesPerCharacter: FormatFix_UsePercent, FormatFix_FontSize, FormatFix_FormatPet
