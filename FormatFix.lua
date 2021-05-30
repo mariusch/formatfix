@@ -21,6 +21,14 @@ local function ApplyFonts()
         PetFrameManaBar.LeftText:SetFont(FontType, FormatFix_FontSize - 2, "OUTLINE")
         PetFrameManaBar.RightText:SetFont(FontType, FormatFix_FontSize - 2, "OUTLINE")
     end
+	
+	FocusFrameHealthBar.TextString:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
+    FocusFrameHealthBar.LeftText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
+    FocusFrameHealthBar.RightText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
+	
+	FocusFrameManaBar.TextString:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
+    FocusFrameManaBar.LeftText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
+    FocusFrameManaBar.RightText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
 
     TargetFrameHealthBar.TextString:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
     TargetFrameHealthBar.LeftText:SetFont(FontType, FormatFix_FontSize, "OUTLINE")
