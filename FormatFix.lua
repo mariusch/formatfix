@@ -49,6 +49,9 @@ local BarFormatFuncs={
     [PlayerFrameHealthBar]=function(self,textstring,val,min,max)
         textstring:SetText(AbbreviateLargeNumbers(val));
     end;
+	 [FocusFrameHealthBar]=function(self,textstring,val,min,max)
+        textstring:SetText(AbbreviateLargeNumbers(val));
+    end;
     [TargetFrameHealthBar]=function(self,textstring,val,min,max)
         if not FormatFix_UsePercent then textstring:SetText(AbbreviateLargeNumbers(val));
         elseif max==100 then textstring:SetText(AbbreviateLargeNumbers(val).."%");
@@ -68,6 +71,7 @@ local BarFormatFuncs={
 }
 
 BarFormatFuncs[PlayerFrameManaBar]=BarFormatFuncs[PlayerFrameHealthBar];
+BarFormatFuncs[FocusFrameManaBar]=BarFormatFuncs[FocusFrameHealthBar];
 BarFormatFuncs[TargetFrameManaBar]=BarFormatFuncs[PlayerFrameHealthBar];
 
 hooksecurefunc("TextStatusBar_UpdateTextStringWithValues",function(self,...)
